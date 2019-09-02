@@ -1,0 +1,82 @@
+<!--
+ * @Autor: ErioY
+ * @Date: 2019-09-01 14:16:48
+ * @Email: 1973545559@qq.com
+ * @Github: https://github.com/ErioY
+ * @LastEditors: ErioY
+ * @LastEditTime: 2019-09-01 18:41:25
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #parent {
+        width: 250px;
+        height: 250px;
+        border: 2px #000 solid;
+        position: relative;
+    }
+    #parent>div {
+        width: 50px;
+        height: 50px;
+        border: 1px red solid;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="parent">
+         
+    </div>
+    <script>
+    // 写一个简单的小游戏：要求先布局一个5*5的格子(div)，起始为白色背景红色边框，
+    // 点击任意一个格子的时候，
+    // 要求该格子和其上下左右相邻的格子背景变色，变色规则——如果格子是白色的就变成黑色，反之亦然
+    var oDiv = document.getElementById("parent");
+    var aDiv = oDiv.getElementsByTagName("div");
+    for (var i = 0; i < 25; i++) {
+        var oDiv1 = document.createElement("div");
+        oDiv1.style.left = i % 5 * 50 + "px";
+        oDiv1.style.top = parseInt(i / 5) * 50 + "px";
+        // 设置布尔值开关和索引值，判断颜色
+        oDiv1.bOn = true;
+        oDiv1.index = i;
+        // 点击格子时
+        oDiv1.onclick = function() {
+            // 调用near()函数
+            var arr = near(this.index);
+            // 循环判断格子背景颜色为黑色还是白色
+            for (var j = 0; j < arr.length; j++) {
+                arr[j].style.backgroundColor = arr[j].bOn ? "black" : "white";
+                // 布尔值取反
+                arr[j].bOn = !arr[j].bOn;
+            }
+        }
+        oDiv.appendChild(oDiv1);
+    }
+    
+    function near(n) {
+        var arr = [];
+        // 先将自身存入数组
+        arr.push(aDiv[n]);
+        // 左
+        n % 5 != 0 && arr.push(aDiv[n - 1]);
+        // 右
+        n % 5 != 4 && arr.push(aDiv[n + 1]);
+        // 上
+        parseInt(n / 5) != 0 && arr.push(aDiv[n - 5]);
+        // 下
+        parseInt(n / 5) != 4 && arr.push(aDiv[n + 5]);
+        return arr;
+    }
+    
+    </script>
+</body>
+</html>
